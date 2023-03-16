@@ -1,0 +1,94 @@
+logging:
+  config: classpath:logback-spring.xml
+
+spring:
+  datasource:
+    aka-dynamic:
+      default-ds: master1 #
+      ds-type:
+        druid: #
+          initial-size: 1
+          min-idle: 2
+          maxActive: 8
+          maxWait: 60000
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: SELECT 1
+          testWhileIdle: true
+          testOnBorrow: false
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxPoolPreparedStatementPerConnectionSize: 20
+          filters: stat
+          connectionProperties: druid.stat.slowSqlMillis=3000
+          stat :
+            mergeSql: false
+
+        hikari:
+          minimum-idle: 5
+          maximum-pool-size: 10
+          connection-timeout: 20000
+          idle-timeout: 30000
+          auto-commit: true
+          max-lifetime: 1800000
+        tomcatdbpool:
+          defaultAutoCommit:  true
+          defaultTransactionIsolation: READ_COMMITTED
+          maxActive: 10
+          maxIdle: 2
+          initialSize: 1
+          testOnReturn: true
+          testWhileIdle: true
+          timeBetweenEvictionRunsMillis: 5000
+          logAbandoned: true
+#        sharding-jdbc:
+#          conf: xxx.conf
+
+      datasources:
+        master1:
+          druid:
+            min-idle: 1
+            initial-size: 3
+          #seata: XA  #XA 或 AT
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test1?characterEncoding=utf8&useSSL=false
+        master2:
+          druid:
+            min-idle: 2
+            initial-size: 3
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test2?characterEncoding=utf8&useSSL=false
+        slave--1:
+          hikari:
+            enable: true
+            idle-timeout: 40000
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test3?characterEncoding=utf8&useSSL=false
+        slave--2:
+          tomcatdbpool:
+            enable: true
+            initialSize: 2
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test4?characterEncoding=utf8&useSSL=false
+        slave3:
+          druid:
+            enable: true
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test5?characterEncoding=utf8&useSSL=false
+
+
+
+
+
+
+

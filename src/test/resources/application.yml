@@ -41,15 +41,14 @@ spring:
           testWhileIdle: true
           timeBetweenEvictionRunsMillis: 5000
           logAbandoned: true
-#        sharding-jdbc:
-#          conf: xxx.conf
+        sharding-jdbc:
+          config-path: sharding-databases.yaml
 
       datasources:
         master1:
           druid:
             min-idle: 1
             initial-size: 3
-          #seata: XA  #XA 或 AT
           username: root
           password: 123456
           driver-class-name: com.mysql.jdbc.Driver
@@ -78,16 +77,104 @@ spring:
           password: 123456
           driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://localhost:3306/test4?characterEncoding=utf8&useSSL=false
-        slave3:
+        master-a-at:
           druid:
             enable: true
+          #seata: AT # 或 XA
           username: root
           password: 123456
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/test5?characterEncoding=utf8&useSSL=false
+          url: jdbc:mysql://localhost:3306/test1?characterEncoding=utf8&useSSL=false
+        master-b-at:
+          druid:
+            enable: true
+         # seata: AT # 或 XA
+          type: local  #local或custom，默认为local，说明username，password，driver-class-name，url这几个参数从本地获取
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test2?characterEncoding=utf8&useSSL=false
+        sharding-ds:
+          sharding-jdbc:
+             enable: true
+         # seata: AT  # sharding-jdbc数据源只支持AT模式，并且seata.conf里必须设置sharding.transaction.seata.at.enable = true
+        remote-ds-jdbc:
+          druid:
+            enable: true
+          #local或custom，如果为custom，则说明username，password，driver-class-name，url这几个参数从from-class定义的类获取，
+          #from-class定义的类必须继承com.github.ulwx.aka.dbutils.springboot.datasource.IDBPoolAttrSourceConfigurer
+          type: custom
+          ref-class: com.github.ulwx.aka.dbutils.springboot.test.remote.IDBPoolAttrSourceConfigurerImpl
+          #seata: AT
+          # 单位秒，每间隔秒后会调用ref-class指定的类，根据返回的配置检查是否和现有的配置相同，
+          # 不相同则使用返回的配置重新构造数据源。如果为0，表示不检查。
+          #url:xxx  在type=custom时，设置url,username,password,driver-class-name无效
+          check-time: 0
+          # 开始检测的间隔时间，单位秒。首次是在init-check-time后执行ref-class，后面是按check-time间隔来调用ref-class
+          init-check-time: 0
 
 
-
+seata:
+  enabled: true
+  application-id: my-akadatasource-test
+  tx-service-group: my_test_tx_group
+  client:
+    rm:
+      async-commit-buffer-limit: 1000
+      report-retry-count: 5
+      table-meta-check-enable: false
+      report-success-enable: true
+      lock:
+        retry-interval: 10
+        retry-times: 30
+        retry-policy-branch-rollback-on-conflict: true
+    tm:
+      commit-retry-count: 5
+      rollback-retry-count: 5
+      defaultGlobalTransactionTimeout: 180000
+    undo:
+      data-validation: true
+      log-serialization: jackson
+      log-table: undo_log
+  service:
+    vgroup-mapping:
+      my_test_tx_group: default
+    #enable-degrade: false
+    #disable-global-transaction: false
+  transport:
+    shutdown:
+      wait: 3
+    thread-factory:
+      boss-thread-prefix: NettyBoss
+      worker-thread-prefix: NettyServerNIOWorker
+      server-executor-thread-prefix: NettyServerBizHandler
+      share-boss-worker: false
+      client-selector-thread-prefix: NettyClientSelector
+      client-selector-thread-size: 1
+      client-worker-thread-prefix: NettyClientWorkerThread
+      worker-thread-size: default
+      boss-thread-size: 1
+    type: TCP
+    server: NIO
+    heartbeat: true
+    serialization: seata
+    compressor: none
+    enable-client-batch-send-request: true
+  config:
+    type: file
+  registry:
+    type: nacos
+    nacos:
+      #必须和seata server的/opt/module/seata/conf/application.yml里的spring.application.name保持一致
+      application: seata-server
+      server-addr: 192.168.137.199:8848
+      namespace:
+      cluster: default
+      group: SEATA_GROUP
+      username: nacos
+      password: nacos
+  log:
+    exception-rate: 100
 
 
 

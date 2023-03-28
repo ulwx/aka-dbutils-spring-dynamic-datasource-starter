@@ -1,0 +1,56 @@
+
+mode:
+  type: Standalone
+  repository:
+    type: JDBC
+
+dataSources:
+  ds_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/test1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123456
+  ds_1:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/test2?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123456
+
+rules:
+- !SHARDING
+  tables:
+    address:
+      actualDataNodes: ds_${0..1}.address
+      keyGenerateStrategy:
+        column: address_id
+        keyGeneratorName: snowflake
+    customer:
+      actualDataNodes: ds_${0..1}.customer
+      keyGenerateStrategy:
+        column: id
+        keyGeneratorName: snowflake
+
+  bindingTables:
+    - address,customer
+
+  defaultDatabaseStrategy:
+    standard:
+      shardingColumn: address_id
+      shardingAlgorithmName: database-inline
+  defaultTableStrategy:
+    none:
+  
+  shardingAlgorithms:
+    database-inline:
+      type: INLINE
+      props:
+        algorithm-expression: ds_${address_id % 2}
+    
+  keyGenerators:
+    snowflake:
+      type: SNOWFLAKE
+
+props:
+  sql-show: true

@@ -29,6 +29,12 @@
     <logger name="org.springframework" additivity="false" level="debug">
         <appender-ref  ref="stdout"/>
     </logger>
+    <logger name="io.seata.core.rpc" additivity="false" level="ERROR">
+        <appender-ref  ref="stdout"/>
+    </logger>
+    <logger name="com.zaxxer.hikari" additivity="false" level="ERROR">
+        <appender-ref  ref="stdout"/>
+    </logger>
     <logger name="freemarker" additivity="false" level="ERROR">
         <appender-ref  ref="stdout"/>
     </logger>
@@ -43,6 +49,14 @@
     </logger>
     <logger name="org.apache.struts2" additivity="false" level="ERROR">
         <appender-ref  ref="stdout"/>
+    </logger>
+
+
+    <logger name="org.springframework" additivity="false" level="ERROR">
+        <appender-ref   ref="stdout"/>
+    </logger>
+    <logger name="com.github.ulwx.aka.dbutils.springboot.datasource" additivity="false" level="ERROR">
+        <appender-ref   ref="stdout"/>
     </logger>
     <logger name="com.opensymphony" additivity="false" level="ERROR">
         <appender-ref   ref="stdout"/>

@@ -1,9 +1,9 @@
 logging:
   config: classpath:logback-spring.xml
 
-spring:
-  datasource:
-    aka-dynamic:
+aka:
+  dbutils:
+    aka-dynamic-ds:
       default-ds: master1 #
       ds-type:
         druid: #

@@ -12,8 +12,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @EnableConfigurationProperties(AkaDbUtilsDynamicDataSourceProperties.class)
+@Configuration
 public class AkaDbUtilsDynamicDataSourceAutoConfiguration {
     private static final Logger log = LoggerFactory.getLogger(AkaDbUtilsDynamicDataSourceAutoConfiguration.class);
     private final AkaDbUtilsDynamicDataSourceProperties properties;

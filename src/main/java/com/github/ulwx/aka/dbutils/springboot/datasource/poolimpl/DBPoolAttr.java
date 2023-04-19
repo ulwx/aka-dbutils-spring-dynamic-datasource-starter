@@ -11,6 +11,8 @@ public  class DBPoolAttr {
     private String url;
     private String type;
     private String refClass;
+    private Boolean enable;
+
     /**
      * 检测时间，单位秒。用于远程获取配置时，检测当前的配置和远程（如数据库）存储的是否一致，不一致则用远程的替换当前
      * 配置，再重新构造数据源。例如设置10，则表示每10秒去重新调用IDBPoolAttrSourceConfigurer#configProperties()方法，
@@ -28,6 +30,14 @@ public  class DBPoolAttr {
 
     public String getCheckTime() {
         return checkTime;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 
     public void setCheckTime(String checkTime) {

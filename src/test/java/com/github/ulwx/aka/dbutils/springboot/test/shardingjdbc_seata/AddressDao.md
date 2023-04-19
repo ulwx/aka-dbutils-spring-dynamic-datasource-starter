@@ -1,10 +1,7 @@
-getListMd
+getOneAddress
 ===
 select * from address WHERE  `address_id` = #{id}
 
-getOne
-===
-select * from address WHERE  `address_id` = #{id}
 
 update
 ===

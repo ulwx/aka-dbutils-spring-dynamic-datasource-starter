@@ -45,7 +45,6 @@ public class AkaDbUtilsDynamicDataSourceAutoConfiguration {
         factory.addAdvisor(advisor);
         return (AkaDynamicDataSourceBean)factory.getProxy();
 
-
     }
 
 

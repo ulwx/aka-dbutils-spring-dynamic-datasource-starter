@@ -16,6 +16,7 @@ public class DataSourceConfig {
     private String refClass;
     private String checkTime;
     private String initCheckTime;
+    private Boolean enable=true;
 
     private String seata; //XA 或AT
 
@@ -34,7 +35,13 @@ public class DataSourceConfig {
     public ShardingJdbcConfig getShardingJdbc() {
         return shardingJdbc;
     }
+    public Boolean getEnable() {
+        return enable;
+    }
 
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
     public String getType() {
         return type;
     }

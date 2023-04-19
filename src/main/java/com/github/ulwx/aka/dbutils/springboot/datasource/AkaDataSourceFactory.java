@@ -108,10 +108,14 @@ public class AkaDataSourceFactory {
     public void build(DsTypeConfig dsType, Map<String, DataSourceConfig> datasources) throws Exception {
         for (String dsName : datasources.keySet()) {
             DataSourceConfig dataSourceConfig = datasources.get(dsName);
+            if(!dataSourceConfig.getEnable()){
+                continue;
+            }
             PoolConfig finalpoolConfig=getFinalPoolConfig(dsType,dsName,dataSourceConfig);
 
             DBPool dbPool = PoolFactory.getDBPool(finalpoolConfig.getPoolType());
             DBPoolAttr dbPoolAttr = new DBPoolAttr();
+            dbPoolAttr.setEnable(dataSourceConfig.getEnable());
             dbPoolAttr.setUrl(dataSourceConfig.getUrl());
             dbPoolAttr.setUsername(dataSourceConfig.getUsername());
             dbPoolAttr.setPassword(dataSourceConfig.getPassword());
@@ -126,12 +130,14 @@ public class AkaDataSourceFactory {
             //处理refClass
             dbPool.refClassHandler(dbPoolAttr);
             //生成最终DataSource
+
             DataSourceInfo dataSourceInfo = dbPool.getNewDataSource(dbPoolAttr);
 
             dataSourceMap.put(dsName, dataSourceInfo);
 
             //检测远程dataSource
-            if(dbPoolAttr.getType()!=null && dbPoolAttr.getType().trim().equalsIgnoreCase(TYPE.custom)) {
+            if(dbPoolAttr.getType()!=null
+                    && dbPoolAttr.getType().trim().equalsIgnoreCase(TYPE.custom)) {
 
                 int checkTime = 0;
                 int initDelay=  0;

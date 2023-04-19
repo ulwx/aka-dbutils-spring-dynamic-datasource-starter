@@ -33,9 +33,9 @@ public class ApplicationTest {
         myService.updateUseAkDs();
 
         AkaDataSourceContext.executeMethod("sharding-ds",()->{
-            Address address=addressDao.getListMd(1);
+            Address address=addressDao.getOneAddress(1);
             Assert.assertTrue(address.getAddressId()==1 && address.getName().equals("123"));
-             address=addressDao.getListMd(2);
+             address=addressDao.getOneAddress(2);
             Assert.assertTrue(address.getAddressId()==2 && address.getName().equals("abc"));
         });
 
@@ -59,9 +59,11 @@ public class ApplicationTest {
         }
 
         AkaDataSourceContext.executeMethod("sharding-ds",()->{
-            Address address=addressDao.getListMd(2);
+            Address address=addressDao.getOneAddress(2);
             Assert.assertTrue(address.getAddressId()==2 && address.getName().equals("2"));
         });
+
+        Thread.sleep(15000);
 
     }
 

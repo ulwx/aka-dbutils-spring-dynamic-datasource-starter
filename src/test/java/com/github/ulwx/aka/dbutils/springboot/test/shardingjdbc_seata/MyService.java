@@ -1,8 +1,6 @@
 package com.github.ulwx.aka.dbutils.springboot.test.shardingjdbc_seata;
 
-import io.seata.spring.annotation.GlobalTransactional;
-import org.apache.shardingsphere.transaction.api.TransactionType;
-import org.apache.shardingsphere.transaction.core.TransactionTypeHolder;
+import com.github.ulwx.aka.dbutils.spring.multids.AkaDS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,8 @@ public class MyService {
 
 
     @Transactional(propagation = Propagation.REQUIRED)
-    @GlobalTransactional
+    //@GlobalTransactional 增加此注解会报错，原因是sharding-jdbc已经实现了@GlobalTransactional 的功能
+    @AkaDS("sharding-ds")
     public void updateUseAkDs() {
         addressDao.updateMdForMaster2(1, "123");
         try {
@@ -33,12 +32,14 @@ public class MyService {
         } catch (Exception ex) {
             LOGGER.debug(ex + "");
         }
+        int i=0;
 
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    //@GlobalTransactional 增加此注解会报错，原因是sharding-jdbc只实现了单条逻辑sql的分布式
     public void updateRollback() {
-        TransactionTypeHolder.set(TransactionType.BASE);
+        //TransactionTypeHolder.set(TransactionType.BASE);
         addressDao.updateMdForMaster2Required(1, "123");
         try {
             addressDao.updateMdForMaster1Required(2, "abc");

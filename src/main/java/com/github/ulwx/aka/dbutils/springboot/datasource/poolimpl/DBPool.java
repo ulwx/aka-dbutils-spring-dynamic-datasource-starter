@@ -78,16 +78,15 @@ public abstract class DBPool {
     public DataSourceInfo getNewDataSource(DBPoolAttr dbPoolAttr) throws Exception {
 
         DataSource p=null;
-
         p=configNewDataSource(dbPoolAttr);
-
         PoolConfig poolConfig=dbPoolAttr.getAttributes();
         Map<String, Method> getMethods = DsConfigUtil.getGetterMethods(poolConfig.getClass());
         getMethods.remove("poolType");
         getMethods.remove("enable");
         configProperties(p,poolConfig,getMethods);
         DataSource finalDataSource=p;
-        if(!this.getType().equalsIgnoreCase(DSPoolType.ShardingJDBC)) {
+        boolean isShardingJDBCDataSource=false;
+        if(!this.getType().equalsIgnoreCase(DSPoolType.ShardingJDBC)) { //不为shardingjdbc数据源时
             Map<String, Method> setMethods = DsConfigUtil.getSetterMethods(p.getClass());
             log.debug("type:" + this.getType());
             for (String name : getMethods.keySet()) {
@@ -105,7 +104,7 @@ public abstract class DBPool {
             }
 
             if (dbPoolAttr.getSeata() != null) {
-                if (dbPoolAttr.getSeata().equalsIgnoreCase("AT")) {
+                if (dbPoolAttr.getSeata().trim().equalsIgnoreCase("AT")) {
                     finalDataSource = (DataSource) Class.forName("io.seata.rm.datasource.DataSourceProxy").
                             getConstructor(DataSource.class).newInstance(p);
                 } else if (dbPoolAttr.getSeata().equalsIgnoreCase("XA")) {
@@ -113,10 +112,12 @@ public abstract class DBPool {
                             getConstructor(DataSource.class).newInstance(p);
                 }
 
-            } else {
-
             }
+
+        }else{
+            isShardingJDBCDataSource=true;
         }
+
         DataSourceInfo dataSourceInfo =  new DataSourceInfo(dbPoolAttr.getDsName(), finalDataSource);
         dataSourceInfo.setSeata(dbPoolAttr.getSeata());
         dataSourceInfo.setOriginalDataSource(p);

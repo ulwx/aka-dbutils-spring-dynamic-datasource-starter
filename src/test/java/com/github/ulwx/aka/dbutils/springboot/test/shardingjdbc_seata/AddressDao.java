@@ -24,7 +24,7 @@ public class AddressDao {
                 false,true,";","utf-8");
 
     }
-    public Address getListMd(int id){
+    public Address getOneAddress(int id){
         Map<String, Object> mp=new HashMap<>();
         mp.put("id",id);
         Address address=mDataBaseTemplate.queryOne(Address.class,
@@ -33,17 +33,6 @@ public class AddressDao {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void updateMd1(int id,String name){
-        update(id,name);
-
-    }
-    @Transactional(propagation = Propagation.NESTED)
-    public void updateMd2(int id,String name){
-        update(id,name);
-        throw new RuntimeException();
-
-    }
     @AkaDS("sharding-ds")
     public void updateMdForMaster1(int id,String name){
         update(id,name);
@@ -79,10 +68,7 @@ public class AddressDao {
 
     @AkaDS("sharding-ds")
     public Address getOne(int id){
-        Map<String, Object> mp=new HashMap<>();
-        mp.put("id",id);
-        Address address=mDataBaseTemplate.queryOne(Address.class,
-                MD.md(),mp);
+        Address address=getOneAddress(id);
         return address;
 
     }

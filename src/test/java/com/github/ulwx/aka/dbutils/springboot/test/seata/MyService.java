@@ -32,6 +32,7 @@ public class MyService {
         } catch (Exception ex) {
             LOGGER.debug(ex + "");
         }
+        int i=0;
 
     }
 

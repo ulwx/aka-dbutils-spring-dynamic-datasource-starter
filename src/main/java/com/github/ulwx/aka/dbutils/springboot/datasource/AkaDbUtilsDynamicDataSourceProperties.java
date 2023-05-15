@@ -8,7 +8,7 @@ import java.util.Map;
 
 @ConfigurationProperties(prefix = AkaDbUtilsDynamicDataSourceProperties.PREFIX)
 public class AkaDbUtilsDynamicDataSourceProperties {
-    public static final String PREFIX = "aka.dynamic-ds";
+    public static final String PREFIX = "aka.dbutils.dynamic-ds";
     @NestedConfigurationProperty
     private String defaultDS ="";
     @NestedConfigurationProperty

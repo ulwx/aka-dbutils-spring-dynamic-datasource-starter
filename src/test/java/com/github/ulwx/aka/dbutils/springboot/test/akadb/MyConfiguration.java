@@ -5,6 +5,7 @@ import com.github.ulwx.aka.dbutils.database.spring.MDataBaseTemplate;
 import com.github.ulwx.aka.dbutils.database.utils.DbConst;
 import com.github.ulwx.aka.dbutils.spring.multids.AkaDataSourceAspect;
 import com.github.ulwx.aka.dbutils.spring.multids.AkaDynamicDataSource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan
 @Import(AkaDataSourceAspect.class)
+@ConditionalOnExpression
 public class MyConfiguration {
 
     @Bean

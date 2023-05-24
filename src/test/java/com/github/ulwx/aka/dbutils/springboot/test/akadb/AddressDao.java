@@ -69,19 +69,14 @@ public class AddressDao {
 
     }
 
-    @AkaDS("master{#number}")
+    @AkaDS("master#{number}")
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateMdDynamic1(int id,String name){
+    public void updateMdDynamic(int id,String name){
         update(id,name);
         throw new RuntimeException();
 
     }
-    @AkaDS("master{#number}")
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void updateMdDynamic2(int id,String name){
-        update(id,name);
 
-    }
     public void update(int id,String name){
         Map<String, Object> mp=new HashMap<>();
         mp.put("name",name);

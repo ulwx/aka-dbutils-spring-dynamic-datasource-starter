@@ -57,10 +57,10 @@ public class MyService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void updateDynamic() {
         AkaDataSourceContext.varPut("number",2);
-        addressDao.updateMdDynamic2(1, "123");
+        addressDao.updateMdDynamic(1, "123");
         try {
             AkaDataSourceContext.varPut("number",1);
-            addressDao.updateMdDynamic1(2, "abc");
+            addressDao.updateMdDynamic(2, "abc");
         } catch (Exception ex) {
             LOGGER.debug(ex + "");
         }

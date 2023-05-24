@@ -2,116 +2,117 @@ logging:
   config: classpath:logback-spring.xml
 
 aka:
-  dynamic-ds:
-    default-ds: master1 #
-    ds-type:
-      druid: #
-        initial-size: 1
-        min-idle: 2
-        maxActive: 8
-        maxWait: 60000
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: SELECT 1
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxPoolPreparedStatementPerConnectionSize: 20
-        filters: stat
-        connectionProperties: druid.stat.slowSqlMillis=3000
-        stat :
-          mergeSql: false
-
-      hikari:
-        minimum-idle: 5
-        maximum-pool-size: 10
-        connection-timeout: 20000
-        idle-timeout: 30000
-        auto-commit: true
-        max-lifetime: 1800000
-      tomcatdbpool:
-        defaultAutoCommit:  true
-        defaultTransactionIsolation: READ_COMMITTED
-        maxActive: 10
-        maxIdle: 2
-        initialSize: 1
-        testOnReturn: true
-        testWhileIdle: true
-        timeBetweenEvictionRunsMillis: 5000
-        logAbandoned: true
-      sharding-jdbc:
-        config-path: sharding-databases.yaml
-    datasources:
-      master1:
-        druid:
-          min-idle: 1
-          initial-size: 3
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/test1?characterEncoding=utf8&useSSL=false
-      master2:
-        druid:
+  dbutils:
+    dynamic-ds:
+      default-ds: master1 #
+      ds-type:
+        druid: #
+          initial-size: 1
           min-idle: 2
-          initial-size: 3
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/test2?characterEncoding=utf8&useSSL=false
-      #slave组，以"--数字"结尾表示定义一个组成员
-      slave--1:
+          maxActive: 8
+          maxWait: 60000
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: SELECT 1
+          testWhileIdle: true
+          testOnBorrow: false
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxPoolPreparedStatementPerConnectionSize: 20
+          filters: stat
+          connectionProperties: druid.stat.slowSqlMillis=3000
+          stat :
+            mergeSql: false
+
         hikari:
-          enable: true
-          idle-timeout: 40000
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/test3?characterEncoding=utf8&useSSL=false
-      #slave组，以"--数字"结尾表示定义一个组成员
-      slave--2:
+          minimum-idle: 5
+          maximum-pool-size: 10
+          connection-timeout: 20000
+          idle-timeout: 30000
+          auto-commit: true
+          max-lifetime: 1800000
         tomcatdbpool:
-          enable: true
-          initialSize: 2
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/test4?characterEncoding=utf8&useSSL=false
-      master-a-at:
-        druid:
-          enable: true
-        seata: AT # 或 XA
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/test1?characterEncoding=utf8&useSSL=false
-      master-b-at:
-        druid:
-          enable: true
-        seata: AT # 或 XA
-        type: local  #local或custom，默认为local，说明username，password，driver-class-name，url这几个参数从本地获取
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/test2?characterEncoding=utf8&useSSL=false
-      sharding-ds:
+          defaultAutoCommit:  true
+          defaultTransactionIsolation: READ_COMMITTED
+          maxActive: 10
+          maxIdle: 2
+          initialSize: 1
+          testOnReturn: true
+          testWhileIdle: true
+          timeBetweenEvictionRunsMillis: 5000
+          logAbandoned: true
         sharding-jdbc:
-           enable: true
-        seata: AT  # sharding-jdbc数据源只支持AT模式，并且seata.conf里必须设置sharding.transaction.seata.at.enable = true 才生效
-      remote-ds-jdbc:
-        druid:
-          enable: true
-        #local或custom，如果为custom，则说明username，password，driver-class-name，url这几个参数从from-class定义的类获取，
-        #from-class定义的类必须继承com.github.ulwx.aka.dbutils.springboot.datasource.IDBPoolAttrSourceConfigurer
-        type: custom
-        ref-class: com.github.ulwx.aka.dbutils.springboot.test.remote.IDBPoolAttrSourceConfigurerImpl
-        #seata: AT
-        # 单位秒，每间隔秒后会调用ref-class指定的类，根据返回的配置检查是否和现有的配置相同，
-        # 不相同则使用返回的配置重新构造数据源。如果为0，表示不检查。
-        #url:xxx  在type=custom时，设置url,username,password,driver-class-name无效
-        check-time: 0
-        # 开始检测的间隔时间，单位秒。首次是在init-check-time后执行ref-class，后面是按check-time间隔来调用ref-class
-        init-check-time: 0
+          config-path: sharding-databases.yaml
+      datasources:
+        master1:
+          druid:
+            min-idle: 1
+            initial-size: 3
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test1?characterEncoding=utf8&useSSL=false
+        master2:
+          druid:
+            min-idle: 2
+            initial-size: 3
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test2?characterEncoding=utf8&useSSL=false
+        #slave组，以"--数字"结尾表示定义一个组成员
+        slave--1:
+          hikari:
+            enable: true
+            idle-timeout: 40000
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test3?characterEncoding=utf8&useSSL=false
+        #slave组，以"--数字"结尾表示定义一个组成员
+        slave--2:
+          tomcatdbpool:
+            enable: true
+            initialSize: 2
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test4?characterEncoding=utf8&useSSL=false
+        master-a-at:
+          druid:
+            enable: true
+          seata: AT # 或 XA
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test1?characterEncoding=utf8&useSSL=false
+        master-b-at:
+          druid:
+            enable: true
+          seata: AT # 或 XA
+          type: local  #local或custom，默认为local，说明username，password，driver-class-name，url这几个参数从本地获取
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/test2?characterEncoding=utf8&useSSL=false
+        sharding-ds:
+          sharding-jdbc:
+             enable: true
+          seata: AT  # sharding-jdbc数据源只支持AT模式，并且seata.conf里必须设置sharding.transaction.seata.at.enable = true 才生效
+        remote-ds-jdbc:
+          druid:
+            enable: true
+          #local或custom，如果为custom，则说明username，password，driver-class-name，url这几个参数从from-class定义的类获取，
+          #from-class定义的类必须继承com.github.ulwx.aka.dbutils.springboot.datasource.IDBPoolAttrSourceConfigurer
+          type: custom
+          ref-class: com.github.ulwx.aka.dbutils.springboot.test.remote.IDBPoolAttrSourceConfigurerImpl
+          #seata: AT
+          # 单位秒，每间隔秒后会调用ref-class指定的类，根据返回的配置检查是否和现有的配置相同，
+          # 不相同则使用返回的配置重新构造数据源。如果为0，表示不检查。
+          #url:xxx  在type=custom时，设置url,username,password,driver-class-name无效
+          check-time: 0
+          # 开始检测的间隔时间，单位秒。首次是在init-check-time后执行ref-class，后面是按check-time间隔来调用ref-class
+          init-check-time: 0
 
 
 seata:

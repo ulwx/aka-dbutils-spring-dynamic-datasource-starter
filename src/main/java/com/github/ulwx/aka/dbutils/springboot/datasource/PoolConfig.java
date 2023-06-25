@@ -1,7 +1,7 @@
 package com.github.ulwx.aka.dbutils.springboot.datasource;
 
 public abstract class PoolConfig {
-    private Boolean enable;
+    private Boolean enable=null;
 
     public Boolean getEnable() {
         return enable;

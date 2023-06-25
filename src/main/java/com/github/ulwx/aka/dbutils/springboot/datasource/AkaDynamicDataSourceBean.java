@@ -12,11 +12,8 @@ public class AkaDynamicDataSourceBean extends AkaDynamicDataSource implements  D
         this.properties = properties;
     }
 
-
     public void destroy() throws Exception {
-
     }
-
     @Override
     public void afterPropertiesSet() {
         try {

@@ -51,23 +51,19 @@ public abstract class DBPool {
             String refClassName=dbPoolAttr.getRefClass();
             try{
                 DBPoolAttrSource dbPoolAttrSource=invokeRefClassHandler(dbPoolAttr.getDsName(),refClassName);
-                if(dbPoolAttr.getUrl()!=null){
-                    log.warn("本地配置的"+dbPoolAttr.getUrl()+"会被忽略！");
-                }
-                dbPoolAttr.setUrl(dbPoolAttrSource.getUrl());
-                if(dbPoolAttr.getUsername()!=null){
-                    log.warn("本地配置的"+dbPoolAttr.getUsername()+"会被忽略！");
-                }
-                dbPoolAttr.setUsername(dbPoolAttrSource.getUsername());
-                if(dbPoolAttr.getPassword()!=null){
-                    log.warn("本地配置的"+dbPoolAttr.getPassword()+"会被忽略！");
-                }
-                dbPoolAttr.setPassword(dbPoolAttrSource.getPassword());
-                if(dbPoolAttr.getDriverClassName()!=null){
-                    log.warn("本地配置的"+dbPoolAttr.getDriverClassName()+"会被忽略！");
-                }
-                dbPoolAttr.setDriverClassName(dbPoolAttrSource.getDriverClassName());
 
+                if(dbPoolAttrSource.getUrl()!=null) {
+                    dbPoolAttr.setUrl(dbPoolAttrSource.getUrl());
+                }
+                if(dbPoolAttrSource.getUsername()!=null) {
+                    dbPoolAttr.setUsername(dbPoolAttrSource.getUsername());
+                }
+                if(dbPoolAttrSource.getPassword()!=null) {
+                    dbPoolAttr.setPassword(dbPoolAttrSource.getPassword());
+                }
+                if(dbPoolAttrSource.getDriverClassName()!=null) {
+                    dbPoolAttr.setDriverClassName(dbPoolAttrSource.getDriverClassName());
+                }
 
             }catch (Exception e){
                 throw new RuntimeException(e);

@@ -21,15 +21,9 @@ public class DataSourceConfig {
     private String seata; //XA 或AT
 
     private DruidConfig druid = null;
-
-
     private HikariCpConfig hikari = null;
-
-
     private Dbcp2Config dbcp2 = null;
-
     private ShardingJdbcConfig shardingJdbc=null;
-
     private TomcatDbConfig tomcatdbpool= null;
 
     public ShardingJdbcConfig getShardingJdbc() {

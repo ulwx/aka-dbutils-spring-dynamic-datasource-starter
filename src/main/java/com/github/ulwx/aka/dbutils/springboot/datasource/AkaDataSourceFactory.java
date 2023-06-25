@@ -67,6 +67,7 @@ public class AkaDataSourceFactory {
             src = dsType.getShardingJdbc();
             des = dataSourceConfig.getShardingJdbc();
         }
+
         if (des == null) {
             int count = 0;
             if (dsType.getDruid() != null) {
@@ -100,6 +101,10 @@ public class AkaDataSourceFactory {
                 src = null;
 
             }
+        }else{
+            if(des.getEnable()==null){
+                des.setEnable(true);
+            }
         }
         PoolConfig finalpoolConfig = merge(src, des);
 
@@ -111,7 +116,7 @@ public class AkaDataSourceFactory {
             if(!dataSourceConfig.getEnable()){
                 continue;
             }
-            PoolConfig finalpoolConfig=getFinalPoolConfig(dsType,dsName,dataSourceConfig);
+            PoolConfig finalpoolConfig=this.getFinalPoolConfig(dsType,dsName,dataSourceConfig);
 
             DBPool dbPool = PoolFactory.getDBPool(finalpoolConfig.getPoolType());
             DBPoolAttr dbPoolAttr = new DBPoolAttr();
@@ -126,6 +131,7 @@ public class AkaDataSourceFactory {
             dbPoolAttr.setRefClass(dataSourceConfig.getRefClass());
             dbPoolAttr.setCheckTime(dataSourceConfig.getCheckTime());
             dbPoolAttr.setInitCheckTime(dataSourceConfig.getInitCheckTime());
+            //设置pool属性
             dbPoolAttr.setAttributes(finalpoolConfig);
             //处理refClass
             dbPool.refClassHandler(dbPoolAttr);
@@ -153,7 +159,6 @@ public class AkaDataSourceFactory {
                     }
 
                     executorService.scheduleWithFixedDelay(() -> {
-
                         try {
                             DBPoolAttrSource dbPoolAttrSourceNew =
                                     dbPool.invokeRefClassHandler(dbPoolAttr.getDsName(),dataSourceConfig.getRefClass());

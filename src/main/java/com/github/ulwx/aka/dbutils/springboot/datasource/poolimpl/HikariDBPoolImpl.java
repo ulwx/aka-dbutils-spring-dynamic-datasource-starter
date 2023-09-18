@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 public class HikariDBPoolImpl extends DBPool {
-    public static HikariDBPoolImpl instance=new HikariDBPoolImpl();
 
     @Override
     public void init(DataSourceInfo dataSource) throws Exception {

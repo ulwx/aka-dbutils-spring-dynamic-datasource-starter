@@ -15,7 +15,6 @@ import java.util.Map;
 
 public class DruidDBPoolImpl extends DBPool {
 
-    public static DruidDBPoolImpl instance = new DruidDBPoolImpl();
 
     @Override
     public DataSource configNewDataSource(DBPoolAttr dbPoolAttr) {

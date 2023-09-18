@@ -10,8 +10,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 public class Dbcp2DBPoolImpl extends DBPool {
-    public static Dbcp2DBPoolImpl instance=new Dbcp2DBPoolImpl();
-
 
     @Override
     public String getType() {

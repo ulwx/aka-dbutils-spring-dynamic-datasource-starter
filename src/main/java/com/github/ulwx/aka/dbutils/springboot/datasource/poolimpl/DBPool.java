@@ -73,8 +73,7 @@ public abstract class DBPool {
     }
     public DataSourceInfo getNewDataSource(DBPoolAttr dbPoolAttr) throws Exception {
 
-        DataSource p=null;
-        p=configNewDataSource(dbPoolAttr);
+        DataSource p=configNewDataSource(dbPoolAttr);
         PoolConfig poolConfig=dbPoolAttr.getAttributes();
         Map<String, Method> getMethods = DsConfigUtil.getGetterMethods(poolConfig.getClass());
         getMethods.remove("poolType");

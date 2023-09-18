@@ -10,8 +10,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 public class TomcatDBPoolImpl extends DBPool {
-    public static TomcatDBPoolImpl instance=new TomcatDBPoolImpl();
-
 
     @Override
     public String getType() {

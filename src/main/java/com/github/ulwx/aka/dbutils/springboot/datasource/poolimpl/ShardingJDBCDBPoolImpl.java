@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class ShardingJDBCDBPoolImpl extends DBPool {
 
-    public static ShardingJDBCDBPoolImpl instance=new ShardingJDBCDBPoolImpl();
     final static String className="org.apache.shardingsphere.driver.api.yaml.YamlShardingSphereDataSourceFactory";
 
     @Override

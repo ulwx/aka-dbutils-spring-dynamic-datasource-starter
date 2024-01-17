@@ -84,7 +84,7 @@ public class AddressDao {
         mDataBaseTemplate.update(MD.md(),mp);
     }
 
-    @AkaDS("slave")
+    @AkaDS("slave") //是一个组
     public Address getOne(int id){
         Map<String, Object> mp=new HashMap<>();
         mp.put("id",id);

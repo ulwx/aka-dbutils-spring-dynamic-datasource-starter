@@ -117,6 +117,9 @@ public class AkaDataSourceFactory {
                 continue;
             }
             PoolConfig finalpoolConfig=this.getFinalPoolConfig(dsType,dsName,dataSourceConfig);
+            if(!finalpoolConfig.getEnable()){
+                continue;
+            }
 
             DBPool dbPool = PoolFactory.getDBPool(finalpoolConfig.getPoolType());
             DBPoolAttr dbPoolAttr = new DBPoolAttr();

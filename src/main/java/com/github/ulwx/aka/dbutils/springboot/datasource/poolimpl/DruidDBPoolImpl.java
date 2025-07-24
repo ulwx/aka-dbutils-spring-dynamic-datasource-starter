@@ -4,18 +4,22 @@ import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.github.ulwx.aka.dbutils.spring.multids.DSPoolType;
 import com.github.ulwx.aka.dbutils.spring.multids.DataSourceInfo;
+import com.github.ulwx.aka.dbutils.springboot.datasource.AkaDataSourceFactory;
 import com.github.ulwx.aka.dbutils.springboot.datasource.PoolConfig;
 import com.github.ulwx.aka.dbutils.springboot.datasource.config.druid.DruidConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class DruidDBPoolImpl extends DBPool {
 
-
+    private static final Logger log = LoggerFactory.getLogger(DruidDBPoolImpl.class);
     @Override
     public DataSource configNewDataSource(DBPoolAttr dbPoolAttr) {
         DruidDataSource p = new DruidDataSource();
@@ -71,7 +75,12 @@ public class DruidDBPoolImpl extends DBPool {
 
     @Override
     public void init(DataSourceInfo dataSource) throws Exception {
-        ((DruidDataSource) dataSource.getOriginalDataSource()).init();
+        try {
+            ((DruidDataSource) dataSource.getOriginalDataSource()).init();
+        } catch (SQLException e) {
+            log.error(dataSource+","+dataSource.getOriginalDataSource(),e);
+            throw new RuntimeException(e);
+        }
     }
 
 

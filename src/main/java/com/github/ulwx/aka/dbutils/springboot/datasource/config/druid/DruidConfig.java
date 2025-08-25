@@ -13,6 +13,8 @@ import com.alibaba.druid.wall.WallFilter;
 import com.github.ulwx.aka.dbutils.spring.multids.DSPoolType;
 import com.github.ulwx.aka.dbutils.springboot.datasource.PoolConfig;
 
+import java.util.List;
+
 
 public class DruidConfig extends PoolConfig  {
     private Integer initialSize;
@@ -50,7 +52,7 @@ public class DruidConfig extends PoolConfig  {
     private Boolean killWhenSocketReadTimeout;
     private String connectionProperties;
     private Integer maxPoolPreparedStatementPerConnectionSize;
-    private String initConnectionSqls;
+    private List<String> connectionInitSqls;
     private Boolean sharePreparedStatements;
     private Integer connectionErrorRetryAttempts;
     private Boolean breakAfterAcquireFailure;
@@ -88,6 +90,14 @@ public class DruidConfig extends PoolConfig  {
 
     public void setMaxActive(Integer maxActive) {
         this.maxActive = maxActive;
+    }
+
+    public List<String> getConnectionInitSqls() {
+        return connectionInitSqls;
+    }
+
+    public void setConnectionInitSqls(List<String> connectionInitSqls) {
+        this.connectionInitSqls = connectionInitSqls;
     }
 
     public Integer getMinIdle() {
@@ -354,13 +364,7 @@ public class DruidConfig extends PoolConfig  {
         this.maxPoolPreparedStatementPerConnectionSize = maxPoolPreparedStatementPerConnectionSize;
     }
 
-    public String getInitConnectionSqls() {
-        return initConnectionSqls;
-    }
 
-    public void setInitConnectionSqls(String initConnectionSqls) {
-        this.initConnectionSqls = initConnectionSqls;
-    }
 
     public Boolean getSharePreparedStatements() {
         return sharePreparedStatements;

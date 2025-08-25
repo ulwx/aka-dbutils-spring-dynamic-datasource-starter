@@ -28,6 +28,7 @@ public class DruidDBPoolImpl extends DBPool {
         p.setUrl(dbPoolAttr.getUrl());
         p.setDriverClassName(dbPoolAttr.getDriverClassName());
 
+
         return p;
     }
 

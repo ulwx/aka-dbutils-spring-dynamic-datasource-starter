@@ -81,7 +81,7 @@ public class DruidDBPoolImpl extends DBPool {
         } catch (SQLException e) {
             log.error(dataSource+","+dataSource.getOriginalDataSource(),e);
            // System.out.println(dataSource+","+dataSource.getOriginalDataSource());
-            throw new RuntimeException(e);
+            throw new RuntimeException(e+""+dataSource+","+dataSource.getOriginalDataSource());
         }
     }
 
